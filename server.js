@@ -14,4 +14,8 @@ connectDB();
 
 server.use("/api/partner-portal", mainRoutes);
 
+server.use("/test", (res, res) => {
+  res.send("Hello World!");
+});
+
 export default server;
