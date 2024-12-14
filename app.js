@@ -14,4 +14,6 @@ connectDB();
 
 app.use("/api/partner-portal", mainRoutes);
 
-export default app;
+export default (req, res) => {
+  app(req, res);
+};
