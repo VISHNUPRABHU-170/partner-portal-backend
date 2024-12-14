@@ -2,9 +2,9 @@
   "name": "partner-portal-backend",
   "version": "1.0.0",
   "description": "Partner Portal Project Code Base",
-  "main": "app.js",
+  "main": "/api/index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node /api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
