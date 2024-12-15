@@ -12,6 +12,6 @@ server.use(express.json());
 
 connectDB();
 
-server.use("/api/partner-portal", mainRoutes);
+server.use("/api", mainRoutes);
 
 export default server;
