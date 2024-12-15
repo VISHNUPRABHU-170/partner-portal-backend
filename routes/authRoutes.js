@@ -7,7 +7,7 @@ const authController = AuthController;
 
 router.post("/login", authController.login);
 
-router.post("/test", (req, res) => {
+router.get("/test", (req, res) => {
   res.send("Hello World!");
 });
 
