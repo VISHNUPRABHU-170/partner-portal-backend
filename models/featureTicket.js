@@ -11,6 +11,10 @@ const featureTicketSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    cloudProvider: {
+      type: String,
+      require: true,
+    },
     priority: {
       type: String,
       require: true,
@@ -33,4 +37,4 @@ const featureTicketSchema = mongoose.Schema(
   }
 );
 
-export default mongoose.model("feature-ticket", featureTicketSchema);
+export default mongoose.model("support-ticket", featureTicketSchema);
