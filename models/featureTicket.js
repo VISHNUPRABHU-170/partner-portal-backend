@@ -20,7 +20,7 @@ const featureTicketSchema = mongoose.Schema(
       require: true,
     },
     tags: {
-      type: String,
+      type: String[],
       require: true,
     },
     active: {
