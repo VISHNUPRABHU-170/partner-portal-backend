@@ -5,7 +5,7 @@ class AuthService {
   register = async (newUserData) => {
     try {
       const existingUser = await User.findOne({ userName: newUserData.userName });
-      if (existingUser) throw new Error("User already exists with this email");
+      if (existingUser) throw new Error("User already exists with this UserName");
 
       const hashedPassword = await bcrypt.hash(newUserData.password, Number(process.env.SALT_ROUNDS));
       const newUser = new User({ ...newUserData, password: hashedPassword });
