@@ -37,4 +37,4 @@ const featureTicketSchema = mongoose.Schema(
   }
 );
 
-export default mongoose.model("support-ticket", featureTicketSchema);
+export default mongoose.model("feature-ticket", featureTicketSchema);
