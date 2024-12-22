@@ -1,15 +1,16 @@
 import express from "express";
 import featureController from "../controllers/featureController.js";
+import AuthSession from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/ticketStatus", featureController.getTicketStatus);
+router.get("/ticketStatus", AuthSession, featureController.getTicketStatus);
 
-router.get("/tickets", featureController.getTickets);
+router.get("/tickets", AuthSession, featureController.getTickets);
 
-// router.get("/:id", featureController.getByID);
+router.get("/:id", AuthSession, featureController.getByID);
 
-router.post("/", featureController.create);
+router.post("/", AuthSession, featureController.create);
 
 // router.put("/:id", featureController.edit);
 
