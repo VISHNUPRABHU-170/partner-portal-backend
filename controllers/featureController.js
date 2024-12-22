@@ -76,6 +76,21 @@ class FeatureController {
       });
     }
   };
+
+  getTickets = async (req, res) => {
+    try {
+      const tickets = await featureService.getTickets(req.query);
+      res.status(200).json({
+        success: true,
+        data: tickets
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to delete the ticket.",
+      });
+    }
+  };
 }
 
 export default new FeatureController();

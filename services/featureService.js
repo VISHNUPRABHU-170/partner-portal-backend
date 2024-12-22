@@ -59,6 +59,27 @@ class FeatureService {
       throw new Error(error.message || "Ticket deletion failed");
     }
   };
+
+  getTickets = async (query) => {
+    try {
+      const { page, limit } = query;
+      console.log(page, limit);
+      const pageNumber = Number(page);
+      const limitNumber = Number(limit, 10);
+      const tickets = await Ticket.find({ active: true })
+        .skip(pageNumber * limitNumber)
+        .limit(limitNumber);
+      const totalTickets = await Ticket.countDocuments();
+      if (!tickets) throw new Error("Tickets not found");
+      return {
+        tickets: tickets,
+        totalTickets: totalTickets,
+      };
+    } catch (error) {
+      console.error("Error in featureService.getTickets:", error);
+      throw new Error(error.message || "Fetch failed");
+    }
+  };
 }
 
 export default new FeatureService();

@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get("/", featureController.getAll);
 
+router.get("/tickets", featureController.getTickets);
+
 router.get("/:id", featureController.getByID);
 
 router.post("/", featureController.create);
