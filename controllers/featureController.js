@@ -1,12 +1,32 @@
 import featureService from "../services/featureService.js";
 
 class FeatureController {
-  getAll = async (req, res) => {
+  getAll = async (_, res) => {
     try {
       const tickets = await featureService.getAll();
       res.status(200).json({
         success: true,
         data: tickets,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to fetch tickets.",
+      });
+    }
+  };
+
+  getTicketStatus = async (_, res) => {
+    try {
+      const awsTickets = await featureService.getTicketStatus({ cloudProvider: "AWS", active: true });
+      const azureTickets = await featureService.getTicketStatus({ cloudProvider: "AZURE", active: true });
+      const gcpTickets = await featureService.getTicketStatus({ cloudProvider: "GCP", active: true });
+      const othersTickets = await featureService.getTicketStatus({ cloudProvider: "OTHERS", active: true });
+      const totalTickets = await featureService.getTicketStatus({ active: true });
+      const responseData = { awsTickets, azureTickets, gcpTickets, othersTickets, totalTickets };
+      res.status(200).json({
+        success: true,
+        data: responseData,
       });
     } catch (error) {
       res.status(500).json({
@@ -82,7 +102,7 @@ class FeatureController {
       const tickets = await featureService.getTickets(req.query);
       res.status(200).json({
         success: true,
-        data: tickets
+        data: tickets,
       });
     } catch (error) {
       res.status(500).json({

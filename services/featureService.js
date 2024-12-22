@@ -24,6 +24,16 @@ class FeatureService {
     }
   };
 
+  getTicketStatus = async (filterData) => {
+    try {
+      const ticket = await Ticket.countDocuments(filterData);
+      return ticket;
+    } catch (error) {
+      console.error("Error in featureService.getTicketStatus:", error);
+      throw new Error(error.message || "Get Ticket status failed");
+    }
+  };
+
   create = async (ticketData) => {
     try {
       const existingTicket = await Ticket.findOne({ title: ticketData.title });
