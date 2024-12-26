@@ -24,9 +24,12 @@ class FeatureService {
     }
   };
 
-  getTicketStatus = async (filterData) => {
+  getTicketStatus = async () => {
     try {
-      const ticket = await Ticket.countDocuments(filterData);
+      const ticket = await Ticket.aggregate([
+        { $match: { active: true } },
+        { $group: { _id: "$cloudProvider", ticketCounts: { $sum: 1 } } },
+      ]);
       return ticket;
     } catch (error) {
       console.error("Error in featureService.getTicketStatus:", error);

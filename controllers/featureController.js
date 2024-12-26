@@ -18,12 +18,24 @@ class FeatureController {
 
   getTicketStatus = async (_, res) => {
     try {
-      const awsTickets = await featureService.getTicketStatus({ cloudProvider: "AWS", active: true });
-      const azureTickets = await featureService.getTicketStatus({ cloudProvider: "AZURE", active: true });
-      const gcpTickets = await featureService.getTicketStatus({ cloudProvider: "GCP", active: true });
-      const othersTickets = await featureService.getTicketStatus({ cloudProvider: "OTHERS", active: true });
-      const totalTickets = await featureService.getTicketStatus({ active: true });
-      const responseData = { awsTickets, azureTickets, gcpTickets, othersTickets, totalTickets };
+      const ticketData = await featureService.getTicketStatus();
+      const responseData = { awsTickets: 0, azureTickets: 0, gcpTickets: 0, othersTickets: 0, totalTickets: 0,};
+      ticketData.forEach((ticket) => {
+        switch (ticket._id) {
+          case "AWS":
+            responseData.awsTickets = ticket.ticketCounts;
+            break;
+          case "AZURE":
+            responseData.azureTickets = ticket.ticketCounts;
+            break;
+          case "GCP":
+            responseData.gcpTickets = ticket.ticketCounts;
+            break;
+          default:
+            responseData.othersTickets += ticket.ticketCounts;
+        }
+      });
+      responseData.totalTickets = responseData.awsTickets + responseData.azureTickets + responseData.gcpTickets + responseData.othersTickets;
       res.status(200).json({
         success: true,
         data: responseData,
