@@ -20,7 +20,7 @@ const supportTicketSchema = mongoose.Schema(
       require: true,
     },
     fileUpload: {
-      type: File,
+      type: Buffer,
       require: true,
     },
     active: {

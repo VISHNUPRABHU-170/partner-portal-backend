@@ -1,5 +1,6 @@
 import express from "express";
 import supportController from "../controllers/supportController.js";
+import AuthSession from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
