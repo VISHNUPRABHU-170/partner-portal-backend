@@ -19,7 +19,7 @@ class SupportController {
   getTicketStatus = async (_, res) => {
     try {
       const ticketData = await supportService.getTicketStatus();
-      const responseData = { 'to-do': 0, 'in-progress': 0, 'completed': 0, 'totalTickets': 0 };
+      const responseData = { 'to-do': 0, 'in-progress': 0, 'completed': 0, 'tickets': 0 };
       ticketData.forEach((ticket) => {
         switch (ticket._id) {
           case "to-do":
@@ -33,7 +33,7 @@ class SupportController {
             break;
         }
       });
-      responseData.totalTickets = responseData['to-do'] + responseData['in-progress'] + responseData['completed'];
+      responseData.tickets = responseData['to-do'] + responseData['in-progress'] + responseData['completed'];
       res.status(200).json({
         success: true,
         data: responseData,
