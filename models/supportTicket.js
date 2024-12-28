@@ -11,10 +11,6 @@ const supportTicketSchema = mongoose.Schema(
       type: String,
       require: true,
     },
-    cloudProvider: {
-      type: String,
-      require: true,
-    },
     priority: {
       type: String,
       require: true,
