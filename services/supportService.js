@@ -7,7 +7,7 @@ class SupportService {
       const tickets = await Ticket.find({ active: true });
       return tickets;
     } catch (error) {
-      console.error("Error in featureService.getAll:", error);
+      console.error("Error in supportService.getAll:", error);
       throw new Error(error.message || "Get all tickets failed");
     }
   };
@@ -19,8 +19,21 @@ class SupportService {
       if (!ticket) throw new Error("Ticket not found");
       return ticket;
     } catch (error) {
-      console.error("Error in featureService.getByID:", error);
+      console.error("Error in supportService.getByID:", error);
       throw new Error(error.message || "Get ticket failed");
+    }
+  };
+
+  getTicketStatus = async () => {
+    try {
+      const ticket = await Ticket.aggregate([
+        { $match: { active: true } },
+        { $group: { _id: "$cloudProvider", ticketCounts: { $sum: 1 } } },
+      ]);
+      return ticket;
+    } catch (error) {
+      console.error("Error in supportService.getTicketStatus:", error);
+      throw new Error(error.message || "Get Ticket status failed");
     }
   };
 
@@ -33,7 +46,7 @@ class SupportService {
       await newTicket.save();
       return newTicket;
     } catch (error) {
-      console.error("Error in featureService.create:", error);
+      console.error("Error in supportService.create:", error);
       throw new Error(error.message || "Ticket creation failed");
     }
   };
@@ -44,7 +57,7 @@ class SupportService {
       if (!updatedTicket) throw new Error("Ticket not found for update");
       return updatedTicket;
     } catch (error) {
-      console.error("Error in featureService.edit:", error);
+      console.error("Error in supportService.edit:", error);
       throw new Error(error.message || "Ticket update failed");
     }
   };
@@ -55,8 +68,29 @@ class SupportService {
       if (!deletedTicket) throw new Error("Ticket not found for deletion");
       return deletedTicket;
     } catch (error) {
-      console.error("Error in featureService.delete:", error);
+      console.error("Error in supportService.delete:", error);
       throw new Error(error.message || "Ticket deletion failed");
+    }
+  };
+
+  getTickets = async (query) => {
+    try {
+      const { page, limit } = query;
+      console.log(page, limit);
+      const pageNumber = Number(page);
+      const limitNumber = Number(limit, 10);
+      const tickets = await Ticket.find({ active: true })
+        .skip(pageNumber * limitNumber)
+        .limit(limitNumber);
+      const totalTickets = await Ticket.countDocuments();
+      if (!tickets) throw new Error("Tickets not found");
+      return {
+        tickets: tickets,
+        totalTickets: totalTickets,
+      };
+    } catch (error) {
+      console.error("Error in supportService.getTickets:", error);
+      throw new Error(error.message || "Fetch failed");
     }
   };
 }

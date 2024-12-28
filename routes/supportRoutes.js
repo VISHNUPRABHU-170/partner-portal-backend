@@ -1,16 +1,18 @@
 import express from "express";
-import featureController from "../controllers/featureController.js";
+import supportController from "../controllers/supportController.js";
 
 const router = express.Router();
 
-router.get("/", featureController.getAll);
+router.get("/ticketStatus", AuthSession, supportController.getTicketStatus);
 
-router.get("/:id", featureController.getByID);
+router.get("/tickets", AuthSession, supportController.getTickets);
 
-router.post("/", featureController.create);
+router.get("/:id", AuthSession, supportController.getByID);
 
-router.put("/:id", featureController.edit);
+router.post("/", AuthSession, supportController.create);
 
-router.delete("/:id", featureController.delete);
+// router.put("/:id", featureController.edit);
+
+// router.delete("/:id", featureController.delete);
 
 export default router;
