@@ -23,6 +23,10 @@ const supportTicketSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    status: {
+      type: String,
+      default: 'new'
+    },
     active: {
       type: Boolean,
       default: true,
