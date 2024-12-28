@@ -19,24 +19,21 @@ class SupportController {
   getTicketStatus = async (_, res) => {
     try {
       const ticketData = await supportService.getTicketStatus();
-      const responseData = { awsTickets: 0, azureTickets: 0, gcpTickets: 0, othersTickets: 0, totalTickets: 0 };
+      const responseData = { 'to-do': 0, 'in-progress': 0, 'completed': 0, 'totalTickets': 0 };
       ticketData.forEach((ticket) => {
         switch (ticket._id) {
-          case "AWS":
-            responseData.awsTickets = ticket.ticketCounts;
+          case "to-do":
+            responseData["to-do"] = ticket.ticketCounts;
             break;
-          case "AZURE":
-            responseData.azureTickets = ticket.ticketCounts;
+          case "in-progress":
+            responseData["in-progress"] = ticket.ticketCounts;
             break;
-          case "GCP":
-            responseData.gcpTickets = ticket.ticketCounts;
+          case "completed":
+            responseData["completed"] = ticket.ticketCounts;
             break;
-          default:
-            responseData.othersTickets += ticket.ticketCounts;
         }
       });
-      responseData.totalTickets =
-        responseData.awsTickets + responseData.azureTickets + responseData.gcpTickets + responseData.othersTickets;
+      responseData.totalTickets = responseData['to-do'] + responseData['in-progress'] + responseData['completed'];
       res.status(200).json({
         success: true,
         data: responseData,
