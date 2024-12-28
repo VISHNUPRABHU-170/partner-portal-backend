@@ -28,7 +28,7 @@ class SupportService {
     try {
       const ticket = await Ticket.aggregate([
         { $match: { active: true } },
-        { $group: { _id: "$cloudProvider", ticketCounts: { $sum: 1 } } },
+        { $group: { _id: "$status", ticketCounts: { $sum: 1 } } },
       ]);
       return ticket;
     } catch (error) {

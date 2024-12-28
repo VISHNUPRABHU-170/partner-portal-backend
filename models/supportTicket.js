@@ -25,7 +25,8 @@ const supportTicketSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'new'
+      require: true,
+      default: "to-do",
     },
     active: {
       type: Boolean,
