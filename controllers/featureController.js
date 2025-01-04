@@ -18,8 +18,8 @@ class FeatureController {
 
   getTicketStatus = async (_, res) => {
     try {
-      const ticketData = await featureService.getTicketStatus();
-      const responseData = { awsTickets: 0, azureTickets: 0, gcpTickets: 0, othersTickets: 0, totalTickets: 0,};
+      const ticketData = await featureService.getTicketStatus("$cloudProvider");
+      const responseData = { awsTickets: 0, azureTickets: 0, gcpTickets: 0, othersTickets: 0, totalTickets: 0 };
       ticketData.forEach((ticket) => {
         switch (ticket._id) {
           case "AWS":
@@ -35,7 +35,8 @@ class FeatureController {
             responseData.othersTickets += ticket.ticketCounts;
         }
       });
-      responseData.totalTickets = responseData.awsTickets + responseData.azureTickets + responseData.gcpTickets + responseData.othersTickets;
+      responseData.totalTickets =
+        responseData.awsTickets + responseData.azureTickets + responseData.gcpTickets + responseData.othersTickets;
       res.status(200).json({
         success: true,
         data: responseData,
@@ -44,6 +45,35 @@ class FeatureController {
       res.status(500).json({
         success: false,
         message: error.message || "Failed to fetch tickets.",
+      });
+    }
+  };
+
+  getTicketPriorityStatus = async (_, res) => {
+    try {
+      const ticketData = await featureService.getTicketStatus("$priority");
+      const responseData = { high: 0, medium: 0, low: 0 };
+      ticketData.forEach((ticket) => {
+        switch (ticket._id) {
+          case "high":
+            responseData.high = ticket.ticketCounts;
+            break;
+          case "medium":
+            responseData.medium = ticket.ticketCounts;
+            break;
+          case "low":
+            responseData.low = ticket.ticketCounts;
+            break;
+        }
+      });
+      res.status(200).json({
+        success: true,
+        data: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to fetch ticket priority status.",
       });
     }
   };

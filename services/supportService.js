@@ -24,15 +24,12 @@ class SupportService {
     }
   };
 
-  getTicketStatus = async () => {
+  getTicketStatus = async (id) => {
     try {
-      const ticket = await Ticket.aggregate([
-        { $match: { active: true } },
-        { $group: { _id: "$status", ticketCounts: { $sum: 1 } } },
-      ]);
+      const ticket = await Ticket.aggregate([{ $match: { active: true } }, { $group: { _id: id, ticketCounts: { $sum: 1 } } }]);
       return ticket;
     } catch (error) {
-      console.error("Error in supportService.getTicketStatus:", error);
+      console.error("Error in featureService.getTicketStatus:", error);
       throw new Error(error.message || "Get Ticket status failed");
     }
   };

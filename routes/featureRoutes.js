@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get("/ticketStatus", AuthSession, featureController.getTicketStatus);
 
+router.get("/priorityStatus", AuthSession, featureController.getTicketPriorityStatus);
+
 router.get("/tickets", AuthSession, featureController.getTickets);
 
 router.get("/:id", AuthSession, featureController.getByID);

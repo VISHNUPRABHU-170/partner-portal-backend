@@ -18,8 +18,8 @@ class SupportController {
 
   getTicketStatus = async (_, res) => {
     try {
-      const ticketData = await supportService.getTicketStatus();
-      const responseData = { 'to-do': 0, 'in-progress': 0, 'completed': 0, 'tickets': 0 };
+      const ticketData = await supportService.getTicketStatus("$status");
+      const responseData = { "to-do": 0, "in-progress": 0, completed: 0, tickets: 0 };
       ticketData.forEach((ticket) => {
         switch (ticket._id) {
           case "to-do":
@@ -33,7 +33,7 @@ class SupportController {
             break;
         }
       });
-      responseData.tickets = responseData['to-do'] + responseData['in-progress'] + responseData['completed'];
+      responseData.tickets = responseData["to-do"] + responseData["in-progress"] + responseData["completed"];
       res.status(200).json({
         success: true,
         data: responseData,
@@ -42,6 +42,35 @@ class SupportController {
       res.status(500).json({
         success: false,
         message: error.message || "Failed to fetch tickets.",
+      });
+    }
+  };
+
+  getTicketPriorityStatus = async (_, res) => {
+    try {
+      const ticketData = await supportService.getTicketStatus("$priority");
+      const responseData = { high: 0, medium: 0, low: 0 };
+      ticketData.forEach((ticket) => {
+        switch (ticket._id) {
+          case "high":
+            responseData.high = ticket.ticketCounts;
+            break;
+          case "medium":
+            responseData.medium = ticket.ticketCounts;
+            break;
+          case "low":
+            responseData.low = ticket.ticketCounts;
+            break;
+        }
+      });
+      res.status(200).json({
+        success: true,
+        data: responseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to fetch ticket priority status.",
       });
     }
   };
