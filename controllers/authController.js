@@ -23,7 +23,7 @@ class AuthController {
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: "Incorrect UserName or Password."
+          message: "Incorrect EmailID or Password."
         });
       }
       const token = jwt.sign(req.body, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRY_TIME });
