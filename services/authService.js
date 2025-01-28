@@ -4,8 +4,8 @@ import User from "../models/userSchema.js";
 class AuthService {
   register = async (newUserData) => {
     try {
-      const existingUser = await User.findOne({ userName: newUserData.userName });
-      if (existingUser) throw new Error("User already exists with this UserName");
+      const existingUser = await User.findOne({ emailID: newUserData.emailID });
+      if (existingUser) throw new Error("User already exists with this Email ID");
 
       const hashedPassword = await bcrypt.hash(newUserData.password, Number(process.env.SALT_ROUNDS));
       const newUser = new User({ ...newUserData, password: hashedPassword });
@@ -19,7 +19,7 @@ class AuthService {
 
   login = async (userData) => {
     try {
-      const user = await User.findOne({ userName: userData.userName });
+      const user = await User.findOne({ emailID: userData.emailID });
       if (!user) return user;
       const isPasswordValid = await bcrypt.compare(userData.password, user.password);
       if (!isPasswordValid) return null;
