@@ -49,7 +49,7 @@ class FeatureService {
       const token = req.headers.authorization;
       const { decodedPayload } = jwtUtils.decodeJWT(token);
       // Get email content
-      const mailContent = mailTemplate.getFeatureRequestEmailContent(decodedPayload.emailID, newTicket);
+      const mailContent = mailTemplate.prepareFeatureRequestEmailContent(decodedPayload.emailID, newTicket);
       // Send email notification
       await mailService.sendMail(mailContent);
       return newTicket;

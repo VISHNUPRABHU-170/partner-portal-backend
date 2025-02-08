@@ -49,7 +49,7 @@ class SupportService {
       const token = req.headers.authorization;
       const { decodedPayload } = jwtUtils.decodeJWT(token);
       // Get email content
-      const mailContent = mailTemplate.getSupportRequestEmailContent(decodedPayload.emailID, newTicket);
+      const mailContent = mailTemplate.prepareSupportRequestEmailContent(decodedPayload.emailID, newTicket);
       // Send email notification
       await mailService.sendMail(mailContent);
       return newTicket;
