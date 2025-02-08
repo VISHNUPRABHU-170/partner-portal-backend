@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../models/userSchema.js";
+import mailTemplates from "../utils/getEmailTemplates.js";
+import mailService from "./mailService.js";
 
 class AuthService {
   register = async (newUserData) => {
@@ -10,6 +12,8 @@ class AuthService {
       const hashedPassword = await bcrypt.hash(newUserData.password, Number(process.env.SALT_ROUNDS));
       const newUser = new User({ ...newUserData, password: hashedPassword });
       await newUser.save();
+      const welcomeEmailConfig = mailTemplates.getWelcomeMailConfig(newUserData.emailID);
+      await mailService.sendMail(welcomeEmailConfig);
       return newUser;
     } catch (error) {
       console.error("Error in AuthService.register:", error);
