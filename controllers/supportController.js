@@ -92,7 +92,7 @@ class SupportController {
 
   create = async (req, res) => {
     try {
-      await supportService.create(req.body);
+      await supportService.create(req);
       res.status(201).json({
         success: true,
         message: "Ticket created successfully.",

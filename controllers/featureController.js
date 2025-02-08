@@ -95,7 +95,7 @@ class FeatureController {
 
   create = async (req, res) => {
     try {
-      await featureService.create(req.body);
+      await featureService.create(req);
       res.status(201).json({
         success: true,
         message: "Ticket created successfully.",

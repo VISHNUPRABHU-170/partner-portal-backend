@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import Ticket from "../models/supportTicket.js";
+import mailTemplate from "../utils/mailContentUtils.js";
+import jwtUtils from "../utils/jwtUtils.js";
+import mailService from "./mailService.js";
 
 class SupportService {
   getAll = async () => {
@@ -34,13 +37,21 @@ class SupportService {
     }
   };
 
-  create = async (ticketData) => {
+  create = async (req) => {
     try {
+      const ticketData = req.body;
       const existingTicket = await Ticket.findOne({ title: ticketData.title });
       if (existingTicket) throw new Error("Ticket already exists with this title");
 
       const newTicket = new Ticket(ticketData);
       await newTicket.save();
+      // Get user email from JWT token
+      const token = req.headers.authorization;
+      const { decodedPayload } = jwtUtils.decodeJWT(token);
+      // Get email content
+      const mailContent = mailTemplate.getSupportRequestEmailContent(decodedPayload.emailID, newTicket);
+      // Send email notification
+      await mailService.sendMail(mailContent);
       return newTicket;
     } catch (error) {
       console.error("Error in supportService.create:", error);

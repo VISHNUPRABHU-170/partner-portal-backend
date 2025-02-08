@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import User from "../models/userSchema.js";
-import mailTemplates from "../utils/getEmailTemplates.js";
+import mailTemplates from "../utils/mailContentUtils.js";
 import mailService from "./mailService.js";
 
 class AuthService {
@@ -8,12 +8,14 @@ class AuthService {
     try {
       const existingUser = await User.findOne({ emailID: newUserData.emailID });
       if (existingUser) throw new Error("User already exists with this Email ID");
-
+      // Hash password
       const hashedPassword = await bcrypt.hash(newUserData.password, Number(process.env.SALT_ROUNDS));
+      // Save user
       const newUser = new User({ ...newUserData, password: hashedPassword });
       await newUser.save();
-      const welcomeEmailConfig = mailTemplates.getWelcomeMailConfig(newUserData.emailID);
-      await mailService.sendMail(welcomeEmailConfig);
+      // Send welcome email
+      const welcomeEmailContent = mailTemplates.prepareWelcomeMailContent(newUserData.emailID);
+      await mailService.sendMail(welcomeEmailContent);
       return newUser;
     } catch (error) {
       console.error("Error in AuthService.register:", error);
