@@ -109,7 +109,7 @@ class FeatureService {
       const tickets = await Ticket.find(
         { title: { $regex: query, $options: "i" } }, // Query criteria
         { _id: 1, title: 1 } // Projection: include only _id and title
-      );
+      ).sort({ title: 1 });
       return tickets;
     } catch (error) {
       console.error("Error in featureService.search:", error);
