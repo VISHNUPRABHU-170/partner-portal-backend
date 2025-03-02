@@ -107,7 +107,7 @@ class FeatureService {
   search = async (query) => {
     try {
       const tickets = await Ticket.find(
-        { title: { $regex: query, $options: "i" }, { active: true} }, // Query criteria
+        { title: { $regex: query, $options: "i" }, active: true }, // Query criteria
         { _id: 1, title: 1 } // Projection: include only _id and title
       ).sort({ title: 1 });
       return tickets;
