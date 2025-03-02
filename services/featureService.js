@@ -103,6 +103,16 @@ class FeatureService {
       throw new Error(error.message || "Fetch failed");
     }
   };
+
+  search = async (query) => {
+    try {
+      const tickets = await Ticket.find({ title: { $regex: query, $options: "i" } });
+      return tickets;
+    } catch (error) {
+      console.error("Error in featureService.search:", error);
+      throw new Error(error.message || "Search failed");
+    }
+  }
 }
 
 export default new FeatureService();
