@@ -92,7 +92,7 @@ class SupportService {
       const tickets = await Ticket.find({ active: true })
         .skip(pageNumber * limitNumber)
         .limit(limitNumber);
-      const totalTickets = await Ticket.countDocuments();
+      const totalTickets = await Ticket.countDocuments({ active: false});
       if (!tickets) throw new Error("Tickets not found");
       return {
         tickets: tickets,
