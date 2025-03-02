@@ -59,9 +59,10 @@ class FeatureService {
     }
   };
 
-  edit = async (id, ticketData) => {
+  update = async (id, ticketData) => {
     try {
-      const updatedTicket = await Ticket.findByIdAndUpdate(id, { $set: ticketData }, { new: true });
+      const objectId = new mongoose.Types.ObjectId(id);
+      const updatedTicket = await Ticket.findByIdAndUpdate(objectId, { $set: ticketData }, { new: true });
       if (!updatedTicket) throw new Error("Ticket not found for update");
       return updatedTicket;
     } catch (error) {
@@ -72,7 +73,8 @@ class FeatureService {
 
   delete = async (id) => {
     try {
-      const deletedTicket = await Ticket.findByIdAndUpdate(id, { active: false }, { new: true });
+      const objectId = new mongoose.Types.ObjectId(id);
+      const deletedTicket = await Ticket.findByIdAndUpdate(objectId, { active: false }, { new: true });
       if (!deletedTicket) throw new Error("Ticket not found for deletion");
       return deletedTicket;
     } catch (error) {

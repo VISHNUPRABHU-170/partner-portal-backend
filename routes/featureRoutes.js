@@ -14,8 +14,8 @@ router.get("/:id", AuthSession, featureController.getByID);
 
 router.post("/", AuthSession, featureController.create);
 
-// router.put("/:id", featureController.edit);
+router.put("/:id", featureController.update);
 
-// router.delete("/:id", featureController.delete);
+router.delete("/:id", featureController.delete);
 
 export default router;
